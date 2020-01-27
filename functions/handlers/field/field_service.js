@@ -69,6 +69,28 @@ exports.getFieldByIdService = async (db, params, user) => {
   }
 };
 
+exports.getFieldsByObjIdService = async (db, params, user) => {
+  try {
+    const objId = params.objId;
+    let allFields = await db
+      .collection("field")
+      .where("objId", "==", objId)
+      .orderBy("createdAtTimestamp", "desc")
+      .get();
+    let fields = [];
+    allFields.forEach(doc => {
+      fields.push({
+        id: doc.id,
+        ...doc.data()
+      });
+    });
+    return { status: 200, response: fields };
+  } catch (err) {
+    err.function = "getFieldByObjIdService";
+    throw err;
+  }
+};
+
 exports.editFieldService = async (db, params, user) => {
   try {
     let date = new Date();

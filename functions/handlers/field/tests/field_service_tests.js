@@ -13,7 +13,8 @@ const {
   getFieldsService,
   getFieldByIdService,
   editFieldService,
-  deleteFieldService
+  deleteFieldService,
+  getFieldsByObjIdService
 } = require("../field_service");
 
 let createFieldTest = async () => {
@@ -37,8 +38,7 @@ let createFieldTest = async () => {
 
 let getFieldsTest = async () => {
   try {
-    const params = {
-    };
+    const params = {};
     const user = {
       username: "user5"
     };
@@ -92,6 +92,18 @@ let deleteFieldTest = async fieldId => {
   }
 };
 
+let getFieldsByObjIdServiceTest = async () => {
+  const params = {
+    objId: "JIhznYzLPseaFV7FmxVC"
+  };
+  try {
+    let resp = await getFieldsByObjIdService(db, params);
+    console.log(resp);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 let run = async () => {
   console.log("Create Field");
   let fieldId = await createFieldTest();
@@ -99,6 +111,8 @@ let run = async () => {
   await getFieldsTest();
   console.log("Get Field by Id");
   await getFieldByIdTest(fieldId);
+  console.log("Get Fields by Obj Id");
+  await getFieldsByObjIdServiceTest();
   console.log("Edit Field");
   await editFieldTest(fieldId);
   console.log("Delete Field");

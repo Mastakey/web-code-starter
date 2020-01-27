@@ -5,6 +5,13 @@ const validateNameValue = name => {
   return false;
 };
 
+const validateId = id => {
+  if (id && id !== "") {
+    return true;
+  }
+  return false;
+};
+
 exports.validateName = name => {
   let messages = [];
   if (!validateNameValue(name)) {
@@ -16,6 +23,18 @@ exports.validateName = name => {
     valid: Object.keys(messages).length === 0 ? true : false
   };
 };
+
+exports.validateAppId = appId => {
+  let messages = [];
+  if (!validateId(appId)) {
+    messages.push("appId is required");
+  }
+  return {
+    field: "appId",
+    messages: messages,
+    valid: Object.keys(messages).length === 0 ? true : false
+  };
+}
 
 // const validatePriorityValue = priority => {
 //   if (priority && priority > 0 && priority < 11) {

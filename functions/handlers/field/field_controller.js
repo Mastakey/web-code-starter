@@ -4,7 +4,8 @@ const {
   getFieldsService,
   getFieldByIdService,
   editFieldService,
-  deleteFieldService
+  deleteFieldService,
+  getFieldsByObjIdService
 } = require("./field_service");
 
 exports.createField = async (req, res) => {
@@ -34,6 +35,20 @@ exports.getFieldById = async (req, res) => {
       fieldId: req.params.fieldId
     };
     let resp = await getFieldByIdService(db, params, req.user);
+    return res.status(resp.status).json(resp.response);
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json(err);
+  }
+};
+
+exports.getFieldsByObjId = async (req, res) => {
+  try {
+    const params = {
+      ...req.body,
+      objId: req.params.objId
+    };
+    let resp = await getFieldsByObjIdService(db, params, req.user);
     return res.status(resp.status).json(resp.response);
   } catch (err) {
     console.error(err);

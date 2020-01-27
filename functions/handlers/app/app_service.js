@@ -1,6 +1,6 @@
 const { validateName } = require("./app_validators");
-  
-  exports.createAppService = async (db, params, user) => {
+
+exports.createAppService = async (db, params, user) => {
   try {
     let date = new Date();
     const newApp = {
@@ -8,7 +8,7 @@ const { validateName } = require("./app_validators");
       description: params.description,
       username: user.username,
       apiUrl: params.apiUrl,
-    databaseURL: params.databaseURL,
+      databaseURL: params.databaseURL,
       createdAt: date.toUTCString(),
       createdAtTimestamp: date.getTime()
     };
@@ -77,7 +77,7 @@ exports.editAppService = async (db, params, user) => {
       description: params.description,
       username: user.username,
       apiUrl: params.apiUrl,
-    databaseURL: params.databaseURL,
+      databaseURL: params.databaseURL,
       updatedAt: date.toUTCString(),
       updatedAtTimestamp: date.getTime()
     };
@@ -92,7 +92,7 @@ exports.editAppService = async (db, params, user) => {
     if (validationErrors.length > 0) {
       throw { error: validationErrors, function: "createTodoService" };
     }
-  
+
     let app = await db.doc(`/app/${params.appId}`).get();
     if (!app.exists) {
       return { status: 404, response: { error: "app not found" } };

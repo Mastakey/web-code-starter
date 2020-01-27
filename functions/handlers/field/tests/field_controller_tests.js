@@ -1,7 +1,6 @@
 const axios = require("axios");
 
-let apiUrl =
-  "https://us-central1-web-code-starter.cloudfunctions.net/api";
+let apiUrl = "https://us-central1-web-code-starter.cloudfunctions.net/api";
 
 let login = async function() {
   try {
@@ -38,7 +37,7 @@ let createField = async function() {
         name: "new Field 1",
         description: "just a new field",
         type: "type value",
-    objId: "objId value",
+        objId: "objId value",
         username: "user5"
       },
       { headers: headers }
@@ -90,7 +89,7 @@ let editField = async function(headers, id) {
         name: "new Field 2",
         description: "just a new field edited",
         type: "type value",
-    objId: "objId value",
+        objId: "objId value",
         username: "user5"
       },
       {
@@ -122,6 +121,21 @@ let deleteField = async function(headers, id) {
   }
 };
 
+let getFieldssByObjId = async function(headers, objId) {
+  try {
+    let fieldRes = await axios.get(apiUrl + "/obj/" + objId + "/field", {
+      headers: headers
+    });
+    console.log(fieldRes.status);
+    console.log(fieldRes.statusText);
+    console.log(fieldRes.data);
+  } catch (err) {
+    console.error(err.response.status);
+    console.error(err.response.statusText);
+    console.error(err.response.data);
+  }
+};
+
 let run = async function() {
   console.log("Login");
   let headers = await login();
@@ -131,6 +145,9 @@ let run = async function() {
   await getFields(headers);
   console.log("Get Field by Id Run");
   await getFieldById(headers, id);
+  let objId = "JIhznYzLPseaFV7FmxVC";
+  console.log("Get Fields by Obj Id Run");
+  await getFieldssByObjId(headers, objId);
   console.log("Edit Field Run");
   await editField(headers, id);
   console.log("Delete Field Run");

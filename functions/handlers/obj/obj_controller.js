@@ -3,6 +3,7 @@ const {
   createObjService,
   getObjsService,
   getObjByIdService,
+  getObjsByAppIdService,
   editObjService,
   deleteObjService
 } = require("./obj_service");
@@ -34,6 +35,20 @@ exports.getObjById = async (req, res) => {
       objId: req.params.objId
     };
     let resp = await getObjByIdService(db, params, req.user);
+    return res.status(resp.status).json(resp.response);
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json(err);
+  }
+};
+
+exports.getObjsByAppId = async (req, res) => {
+  try {
+    const params = {
+      ...req.body,
+      appId: req.params.appId
+    };
+    let resp = await getObjsByAppIdService(db, params, req.user);
     return res.status(resp.status).json(resp.response);
   } catch (err) {
     console.error(err);
