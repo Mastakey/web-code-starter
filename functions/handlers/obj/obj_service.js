@@ -1,6 +1,6 @@
-const { validateName } = require("./obj_validators");
-  
-  exports.createObjService = async (db, params, user) => {
+const { validateName, validateAppId } = require("./obj_validators");
+
+exports.createObjService = async (db, params, user) => {
   try {
     let date = new Date();
     const newObj = {
@@ -17,6 +17,11 @@ const { validateName } = require("./obj_validators");
     const nameValidation = validateName(params.name);
     if (!nameValidation.valid) {
       validationErrors.push(nameValidation);
+    }
+    //Id
+    const appIdValidation = validateAppId(params.appId);
+    if (!appIdValidation.valid) {
+      validationErrors.push(appIdValidation);
     }
     //Throw Error
     if (validationErrors.length > 0) {
@@ -68,6 +73,28 @@ exports.getObjByIdService = async (db, params, user) => {
   }
 };
 
+exports.getObjsByAppIdService = async (db, params, user) => {
+  try {
+    const appId = params.appId;
+    let allObjs = await db
+      .collection("obj")
+      .where("appId", "==", appId)
+      .orderBy("createdAtTimestamp", "desc")
+      .get();
+    let objs = [];
+    allObjs.forEach(doc => {
+      objs.push({
+        id: doc.id,
+        ...doc.data()
+      });
+    });
+    return { status: 200, response: objs };
+  } catch (err) {
+    err.function = "getObjByAppIdService";
+    throw err;
+  }
+};
+
 exports.editObjService = async (db, params, user) => {
   try {
     let date = new Date();
@@ -90,7 +117,7 @@ exports.editObjService = async (db, params, user) => {
     if (validationErrors.length > 0) {
       throw { error: validationErrors, function: "createTodoService" };
     }
-  
+
     let obj = await db.doc(`/obj/${params.objId}`).get();
     if (!obj.exists) {
       return { status: 404, response: { error: "obj not found" } };

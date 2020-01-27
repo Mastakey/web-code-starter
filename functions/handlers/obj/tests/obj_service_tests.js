@@ -13,14 +13,15 @@ const {
   getObjsService,
   getObjByIdService,
   editObjService,
-  deleteObjService
+  deleteObjService,
+  getObjsByAppIdService
 } = require("../obj_service");
 
 let createObjTest = async () => {
   const params = {
     name: "test obj",
     description: "test obj desc",
-    appId: "appId value"
+    appId: "4jOfLfzb0vUIptM0mBo1"
   };
   const user = {
     username: "user5"
@@ -90,6 +91,18 @@ let deleteObjTest = async objId => {
   }
 };
 
+let getObjsByAppIdServiceTest = async () => {
+  const params = {
+    appId: "4jOfLfzb0vUIptM0mBo1"
+  };
+  try {
+    let resp = await getObjsByAppIdService(db, params);
+    console.log(resp);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 let run = async () => {
   console.log("Create Obj");
   let objId = await createObjTest();
@@ -97,6 +110,8 @@ let run = async () => {
   await getObjsTest();
   console.log("Get Obj by Id");
   await getObjByIdTest(objId);
+  console.log("Get Objs by App Id");
+  await getObjsByAppIdServiceTest();
   console.log("Edit Obj");
   await editObjTest(objId);
   console.log("Delete Obj");
