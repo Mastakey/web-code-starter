@@ -279,11 +279,11 @@ exports.createCodeGenSerService = createCodeGenSerService = async (
       appId = objData.appId;
     }
     const fields = await getFieldsByObj(db, objId);
-    code = generateServiceCode(bigName, smallName, fields);
+    code = generateServiceCode(smallName, bigName, fields);
     const app = await getAppByIdService(db, { appId: appId }, user);
     const databaseURL = app.response.databaseURL;
-    codeTest = generateServiceTestCode(bigName, smallName, fields, databaseURL);
-    codeValidators = generateValidatorCode(bigName, smallName, fields);
+    codeTest = generateServiceTestCode(smallName, bigName, fields, databaseURL);
+    codeValidators = generateValidatorCode(smallName, bigName, fields);
     const newCodeService = {
       name: `${smallName}_service.js`,
       description: `${bigName} Service Code`,
@@ -360,7 +360,7 @@ exports.createCodeGenConService = createCodeGenConService = async (
       appId = objData.appId;
     }
     const fields = await getFieldsByObj(db, objId);
-    code = generateControllerCode(bigName, smallName, fields);
+    code = generateControllerCode(smallName, bigName, fields);
     const app = await getAppByIdService(
       db,
       {
@@ -369,7 +369,7 @@ exports.createCodeGenConService = createCodeGenConService = async (
       user
     );
     const apiUrl = app.response.apiUrl;
-    codeTest = generateControllerTestCode(bigName, smallName, fields, apiUrl);
+    codeTest = generateControllerTestCode(smallName, bigName, fields, apiUrl);
     const newCodeController = {
       name: `${smallName}_controller.js`,
       description: `${bigName} Controller Code`,
